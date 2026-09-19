@@ -29,6 +29,23 @@ public class ExpenseService {
                 .orElseThrow(() -> new RuntimeException("Expense not found"));
     }
 
+    public List<Expense> getExpensesByUser(Long userId) {
+        return expenseRepository.findByUserId(userId);
+    }
+
+    public Expense updateExpense(Long id, Expense expense) {
+        Expense existingExpense = expenseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Expense not found"));
+
+        existingExpense.setAmount(expense.getAmount());
+        existingExpense.setDescription(expense.getDescription());
+        existingExpense.setPaymentMethod(expense.getPaymentMethod());
+        existingExpense.setExpenseDate(expense.getExpenseDate());
+        existingExpense.setCategory(expense.getCategory());
+
+        return expenseRepository.save(existingExpense);
+    }
+
     public void deleteExpense(Long id) {
         if (!expenseRepository.existsById(id)) {
             throw new RuntimeException("Expense not found");
