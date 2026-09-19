@@ -2,6 +2,7 @@ package com.expenseflow.budget.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,43 +12,56 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.expenseflow.budget.entity.Budget;
+import jakarta.validation.Valid;
+
+import com.expenseflow.budget.dto.BudgetRequest;
+import com.expenseflow.budget.dto.BudgetResponse;
 import com.expenseflow.budget.service.BudgetService;
+import com.expenseflow.common.security.SecurityUtils;
+import com.expenseflow.user.entity.User;
+import com.expenseflow.user.service.UserService;
 
 @RestController
 @RequestMapping("/api/budgets")
 public class BudgetController {
 
     private final BudgetService budgetService;
+    private final UserService userService;
 
-    public BudgetController(BudgetService budgetService) {
+    public BudgetController(BudgetService budgetService, UserService userService) {
         this.budgetService = budgetService;
+        this.userService = userService;
     }
 
     @PostMapping
-    public Budget createBudget(@RequestBody Budget budget) {
-        return budgetService.saveBudget(budget);
+    public ResponseEntity<BudgetResponse> createBudget(@Valid @RequestBody BudgetRequest request) {
+        String email = SecurityUtils.getAuthenticatedUserEmail();
+        User loggedInUser = userService.getUserByEmail(email);
+        
+        return ResponseEntity.status(201).body(budgetService.saveBudget(request, loggedInUser));
     }
 
-    @GetMapping("/user/{userId}")
-    public List<Budget> getBudgetsByUser(@PathVariable Long userId) {
-        return budgetService.getBudgetsByUser(userId);
+    @GetMapping("/my-budgets")
+    public ResponseEntity<List<BudgetResponse>> getMyBudgets() {
+        String email = SecurityUtils.getAuthenticatedUserEmail();
+        User loggedInUser = userService.getUserByEmail(email);
+        return ResponseEntity.ok(budgetService.getBudgetsByUser(loggedInUser.getId()));
     }
 
     @GetMapping("/{id}")
-    public Budget getBudgetById(@PathVariable Long id) {
-        return budgetService.getBudgetById(id);
+    public ResponseEntity<BudgetResponse> getBudgetById(@PathVariable Long id) {
+        return ResponseEntity.ok(budgetService.getBudgetById(id));
     }
 
     @PutMapping("/{id}")
-    public Budget updateBudget(@PathVariable Long id,
-                               @RequestBody Budget budget) {
-        return budgetService.updateBudget(id, budget);
+    public ResponseEntity<BudgetResponse> updateBudget(@PathVariable Long id,
+                                   @Valid @RequestBody BudgetRequest request) {
+        return ResponseEntity.ok(budgetService.updateBudget(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public String deleteBudget(@PathVariable Long id) {
+    public ResponseEntity<String> deleteBudget(@PathVariable Long id) {
         budgetService.deleteBudget(id);
-        return "Budget deleted successfully";
+        return ResponseEntity.ok("Budget deleted successfully");
     }
 }

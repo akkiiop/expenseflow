@@ -10,8 +10,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import com.expenseflow.user.entity.User;
+import jakarta.validation.Valid;
+
+import com.expenseflow.user.dto.UserRequest;
+import com.expenseflow.user.dto.UserResponse;
+import com.expenseflow.user.dto.LoginRequest;
 import com.expenseflow.user.service.UserService;
 
 @RestController
@@ -24,30 +30,37 @@ public class UserController {
         this.userService = userService;
     }
     
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest request) {
+        String token = userService.login(request);
+        return ResponseEntity.ok(token);
+    }
+    
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest request) {
+        UserResponse createdUser = userService.saveUser(request);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
     
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
     
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
     
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable Long id) {
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return "User deleted successfully";
+        return ResponseEntity.ok("User deleted successfully");
     }
     
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id,
-                           @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id,
+                           @Valid @RequestBody UserRequest request) {
+        return ResponseEntity.ok(userService.updateUser(id, request));
     }
 }
