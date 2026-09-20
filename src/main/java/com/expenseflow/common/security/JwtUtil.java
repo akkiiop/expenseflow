@@ -11,8 +11,9 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // A secret key is used to sign the token. We generate a secure random one here.
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    // Stable 256-bit signing key so sessions stay valid across server restarts
+    private static final String SECRET_STRING = "ExpenseFlowSecureSecretKeyForJWTTokenGeneration2026";
+    private final Key key = Keys.hmacShaKeyFor(SECRET_STRING.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     
     // Token validity (e.g., 24 hours in milliseconds)
     private final long jwtExpirationMs = 86400000;

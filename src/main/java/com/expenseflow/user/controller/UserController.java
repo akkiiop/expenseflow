@@ -19,6 +19,8 @@ import com.expenseflow.user.dto.UserRequest;
 import com.expenseflow.user.dto.UserResponse;
 import com.expenseflow.user.dto.LoginRequest;
 import com.expenseflow.user.service.UserService;
+import com.expenseflow.common.security.SecurityUtils;
+import com.expenseflow.user.entity.User;
 
 @RestController
 @RequestMapping("/api/users")
@@ -34,6 +36,13 @@ public class UserController {
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequest request) {
         String token = userService.login(request);
         return ResponseEntity.ok(token);
+    }
+    
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser() {
+        String email = SecurityUtils.getAuthenticatedUserEmail();
+        User user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getCreatedAt()));
     }
     
     @PostMapping

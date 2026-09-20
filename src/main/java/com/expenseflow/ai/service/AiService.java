@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class AiService {
 
-    @Value("${spring.ai.openai.api-key}")
+    @Value("${spring.ai.openai.api-key:}")
     private String geminiApiKey;
 
     private final ExpenseRepository expenseRepository;
@@ -83,6 +83,9 @@ public class AiService {
 
     // This replaces Spring AI! We talk to Google directly using pure Java.
     private String callGeminiApi(String prompt) {
+        if (geminiApiKey == null || geminiApiKey.isBlank()) {
+            return "Gemini API key is not configured. Please set the GEMINI_API_KEY environment variable or configure it in application.properties to enable AI insights.";
+        }
         try {
             // Updated to use the incredibly new Gemini 2.5 Flash model!
             String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + geminiApiKey;
