@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Plus, Target } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Plus, Target, Tags } from 'lucide-react';
 import { useToast } from '../components/Toast';
 import Modal from '../components/Modal';
 import ConfirmModal from '../components/ConfirmModal';
@@ -19,11 +20,13 @@ const getMonthName = (month) => {
 
 export default function Budgets() {
   const { addToast } = useToast();
+  const navigate = useNavigate();
   const [budgets, setBudgets] = useState([]);
   const [categories, setCategories] = useState([]);
   const [spending, setSpending] = useState({});
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [noCategoryModalOpen, setNoCategoryModalOpen] = useState(false);
   const [editingBudget, setEditingBudget] = useState(null);
   const [saving, setSaving] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -73,12 +76,16 @@ export default function Budgets() {
   };
 
   const openAddModal = () => {
+    if (categories.length === 0) {
+      setNoCategoryModalOpen(true);
+      return;
+    }
     setEditingBudget(null);
     setForm({
       amount: '',
       month: String(currentMonth),
       year: String(currentYear),
-      categoryId: categories.length > 0 ? String(categories[0].id) : '',
+      categoryId: String(categories[0].id),
     });
     setModalOpen(true);
   };
@@ -120,8 +127,7 @@ export default function Budgets() {
       setModalOpen(false);
       loadData();
     } catch (error) {
-      const msg = error.response?.data?.message || 'Failed to save budget';
-      addToast(msg, 'error');
+      addToast(error.response?.data?.message || 'Failed to save budget', 'error');
     } finally {
       setSaving(false);
     }
@@ -203,16 +209,28 @@ export default function Budgets() {
             </div>
           );
         })
+      ) : categories.length === 0 ? (
+        <div className="empty-state">
+          <div className="empty-icon">
+            <Tags size={24} strokeWidth={2} />
+          </div>
+          <h3>No categories yet</h3>
+          <p>Create a category before setting a budget.</p>
+          <Link to="/categories" className="btn btn-primary" style={{ marginTop: '1.25rem' }}>
+            <Plus size={16} strokeWidth={2.5} />
+            <span>Create Category</span>
+          </Link>
+        </div>
       ) : (
         <div className="empty-state">
           <div className="empty-icon">
             <Target size={24} strokeWidth={2} />
           </div>
-          <h3>No budgets set</h3>
-          <p>Create monthly category budgets to monitor spending limits</p>
+          <h3>No budgets yet</h3>
+          <p>Set a category spending limit if you want to track a budget.</p>
           <button className="btn btn-primary" style={{ marginTop: '1.25rem' }} onClick={openAddModal}>
             <Plus size={16} strokeWidth={2.5} />
-            <span>Set Your First Budget</span>
+            <span>Create Budget</span>
           </button>
         </div>
       )}
@@ -288,6 +306,55 @@ export default function Budgets() {
               min="2020"
               max="2030"
             />
+          </div>
+        </div>
+      </Modal>
+
+      {/* Category Prerequisite Modal */}
+      <Modal
+        isOpen={noCategoryModalOpen}
+        onClose={() => setNoCategoryModalOpen(false)}
+        title="Category Required First"
+        footer={
+          <>
+            <button className="btn btn-secondary" onClick={() => setNoCategoryModalOpen(false)}>
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                setNoCategoryModalOpen(false);
+                navigate('/categories');
+              }}
+            >
+              Go to Categories
+            </button>
+          </>
+        }
+      >
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+          <div
+            style={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              background: 'rgba(99, 102, 241, 0.15)',
+              color: 'var(--primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <Tags size={24} />
+          </div>
+          <div>
+            <h4 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+              No Categories Available
+            </h4>
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+              Monthly budgets are applied to specific spending categories. Please create at least one category before setting your spending limits.
+            </p>
           </div>
         </div>
       </Modal>

@@ -8,6 +8,8 @@ import {
   ArrowRight,
   Plus,
   Sparkles,
+  CheckCircle2,
+  Circle,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../components/Toast';
@@ -18,6 +20,8 @@ import dashboardService from '../services/dashboardService';
 import expenseService from '../services/expenseService';
 import incomeService from '../services/incomeService';
 import budgetService from '../services/budgetService';
+import categoryService from '../services/categoryService';
+import { getCategoryColor, getCategoryBadgeStyle } from '../utils/categoryColors';
 
 const formatCurrency = (amount) => {
   const num = Number(amount) || 0;
@@ -51,6 +55,7 @@ export default function Dashboard() {
   const [budgets, setBudgets] = useState([]);
   const [budgetSpending, setBudgetSpending] = useState({});
   const [categorySpending, setCategorySpending] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const now = new Date();
   const currentMonth = now.getMonth() + 1;
@@ -63,17 +68,19 @@ export default function Dashboard() {
   const loadDashboard = async () => {
     setLoading(true);
     try {
-      const [summaryData, expenseData, incomeData, budgetData, allMonthExpenses] = await Promise.all([
+      const [summaryData, expenseData, incomeData, budgetData, allMonthExpenses, categoriesData] = await Promise.all([
         dashboardService.getSummary(currentMonth, currentYear),
         expenseService.getMyExpenses(0, 5),
         incomeService.getMyIncomes(0, 5),
         budgetService.getMyBudgets(),
         expenseService.getMyExpenses(0, 1000),
+        categoryService.getMyCategories(),
       ]);
 
       setSummary(summaryData);
       setRecentExpenses(expenseData.content || []);
       setRecentIncomes(incomeData.content || []);
+      setCategories(categoriesData || []);
 
       // Filter budgets to current month
       const currentBudgets = budgetData.filter(
@@ -116,17 +123,91 @@ export default function Dashboard() {
     ? Math.max(...categorySpending.map((c) => c.amount))
     : 1;
 
+  const hasCategories = categories.length > 0;
+  const hasIncome = recentIncomes.length > 0 || Number(summary?.totalIncome) > 0;
+  const hasExpenses = recentExpenses.length > 0 || Number(summary?.totalExpenses) > 0;
+  const hasBudgets = budgets.length > 0;
+
+  const setupItems = [
+    { label: 'Create categories', completed: hasCategories, to: '/categories', desc: 'Organize your spending' },
+    { label: 'Add income', completed: hasIncome, to: '/income', desc: 'Set your starting balance' },
+    { label: 'Add your first expense', completed: hasExpenses, to: '/expenses', desc: 'Log daily purchases' },
+    { label: 'Create a budget', completed: hasBudgets, to: '/budgets', desc: 'Track spending limits', optional: true },
+  ];
+
+  const completedCount = setupItems.filter((i) => i.completed).length;
+  const nextIncomplete = setupItems.find((i) => !i.completed) || setupItems[0];
+  const showSetupCard = !(hasCategories && hasIncome && hasExpenses);
+
   return (
     <div className="animate-fade-in">
       {/* Greeting */}
-      <div>
-        <h1 className="page-greeting">
-          {getGreeting()}, {user?.name || 'there'} 👋
-        </h1>
-        <p className="page-greeting-sub">
-          Here's your financial overview for {getMonthName(currentMonth)} {currentYear}
-        </p>
+      <div className="dashboard-greeting-row">
+        <div>
+          <h1 className="page-greeting">
+            {getGreeting()}, {user?.name || 'there'} 👋
+          </h1>
+          <p className="page-greeting-sub">
+            Here's your financial overview for {getMonthName(currentMonth)} {currentYear}
+          </p>
+        </div>
       </div>
+
+      {/* Smart Dashboard Setup Card */}
+      {showSetupCard && (
+        <div className="dashboard-setup-card">
+          <div className="setup-card-header">
+            <div className="setup-card-title-box">
+              <span className="section-badge" style={{ margin: 0 }}>GET STARTED</span>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                Initial Setup Checklist
+              </h3>
+            </div>
+            <div className="setup-progress-badge">
+              <span className="setup-progress-text">{completedCount} of 4 completed</span>
+              <div className="setup-progress-bar-track">
+                <div
+                  className="setup-progress-bar-fill"
+                  style={{ width: `${(completedCount / 4) * 100}%` }}
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="setup-checklist-grid">
+            {setupItems.map((item, idx) => (
+              <Link
+                key={idx}
+                to={item.to}
+                className={`setup-check-item ${item.completed ? 'completed' : 'pending'}`}
+              >
+                <div className="setup-check-indicator">
+                  {item.completed ? (
+                    <CheckCircle2 size={18} className="text-income" />
+                  ) : (
+                    <Circle size={18} className="text-muted" />
+                  )}
+                </div>
+                <div className="setup-check-info">
+                  <div className="setup-check-label">
+                    <span>{item.label}</span>
+                    {item.optional && <span className="optional-tag">Optional</span>}
+                  </div>
+                  <span className="setup-check-desc">{item.desc}</span>
+                </div>
+                <ArrowRight size={14} className="setup-check-arrow" />
+              </Link>
+            ))}
+          </div>
+
+          <div className="setup-card-footer" style={{ borderTop: '1px solid var(--border)', paddingTop: '0.875rem', marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+            <Link to={nextIncomplete.to} className="btn btn-primary btn-sm">
+              <span>Continue Setup</span>
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Summary Cards with Lucide Icons */}
       <div className="summary-cards stagger-children">
@@ -182,7 +263,7 @@ export default function Dashboard() {
                       className="bar-fill"
                       style={{
                         width: `${Math.max((cat.amount / maxSpending) * 100, 4)}%`,
-                        backgroundColor: BAR_COLORS[i % BAR_COLORS.length],
+                        backgroundColor: getCategoryColor(null, cat.name, categories),
                       }}
                     >
                       {cat.amount / maxSpending > 0.25 ? formatCurrency(cat.amount) : ''}
@@ -241,15 +322,21 @@ export default function Dashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {recentExpenses.map((exp) => (
-                    <tr key={exp.id}>
-                      <td>{exp.description || '—'}</td>
-                      <td>
-                        <span className="badge badge-expense">{exp.categoryName}</span>
-                      </td>
-                      <td className="amount-negative">-{formatCurrency(exp.amount)}</td>
-                    </tr>
-                  ))}
+                  {recentExpenses.map((exp) => {
+                    const color = getCategoryColor(exp.categoryId, exp.categoryName, categories);
+                    return (
+                      <tr key={exp.id}>
+                        <td>{exp.description || '—'}</td>
+                        <td>
+                          <span className="badge" style={getCategoryBadgeStyle(color)}>
+                            <span className="badge-dot" style={{ backgroundColor: color }} />
+                            {exp.categoryName || 'Uncategorized'}
+                          </span>
+                        </td>
+                        <td className="amount-negative">-{formatCurrency(exp.amount)}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             ) : (

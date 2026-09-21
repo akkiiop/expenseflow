@@ -98,7 +98,7 @@ export default function Sidebar({ isOpen, onClose }) {
         </nav>
 
         <div className="sidebar-footer">
-          <button className="sidebar-link" onClick={handleLogout} style={{ width: '100%' }}>
+          <button className="sidebar-link sidebar-logout" onClick={handleLogout} style={{ width: '100%' }}>
             <span className="icon">
               <LogOut size={18} strokeWidth={2} />
             </span>

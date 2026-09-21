@@ -190,11 +190,11 @@ export default function Income() {
           <div className="empty-icon">
             <TrendingUp size={24} strokeWidth={2} />
           </div>
-          <h3>No income recorded</h3>
+          <h3>No income recorded yet</h3>
           <p>Add your primary income sources to balance against expenses</p>
           <button className="btn btn-primary" style={{ marginTop: '1.25rem' }} onClick={openAddModal}>
             <Plus size={16} strokeWidth={2.5} />
-            <span>Add Your First Income</span>
+            <span>Add Income</span>
           </button>
         </div>
       )}

@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './components/Toast';
 import ProtectedRoute from './components/ProtectedRoute';
 import AppLayout from './layouts/AppLayout';
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -20,6 +21,10 @@ export default function App() {
         <ToastProvider>
           <Routes>
             {/* Public routes */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/guide" element={<Navigate to="/" replace />} />
+            <Route path="/features" element={<Landing />} />
+            <Route path="/how-it-works" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
@@ -40,9 +45,8 @@ export default function App() {
               <Route path="/ai-insights" element={<AIInsights />} />
             </Route>
 
-            {/* Default redirect */}
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            {/* Default redirect for unknown paths */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </ToastProvider>
       </AuthProvider>

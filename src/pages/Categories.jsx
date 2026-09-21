@@ -5,11 +5,7 @@ import Modal from '../components/Modal';
 import ConfirmModal from '../components/ConfirmModal';
 import LoadingSpinner from '../components/LoadingSpinner';
 import categoryService from '../services/categoryService';
-
-const CATEGORY_COLORS = [
-  '#10b981', '#6366f1', '#f43f5e', '#f59e0b', '#8b5cf6',
-  '#ec4899', '#14b8a6', '#f97316', '#06b6d4', '#84cc16',
-];
+import { CATEGORY_COLORS } from '../utils/categoryColors';
 
 export default function Categories() {
   const { addToast } = useToast();
@@ -143,10 +139,10 @@ export default function Categories() {
             <Tags size={24} strokeWidth={2} />
           </div>
           <h3>No categories yet</h3>
-          <p>Create categories like Food, Travel, Shopping to organize your expenses</p>
+          <p>Create a category before recording your first expense.</p>
           <button className="btn btn-primary" style={{ marginTop: '1.25rem' }} onClick={openAddModal}>
             <Plus size={16} strokeWidth={2.5} />
-            <span>Add Your First Category</span>
+            <span>Create Category</span>
           </button>
         </div>
       )}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Plus, Pencil, Trash2, Receipt } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Plus, Pencil, Trash2, Receipt, Tags } from 'lucide-react';
 import { useToast } from '../components/Toast';
 import Modal from '../components/Modal';
 import ConfirmModal from '../components/ConfirmModal';
@@ -7,6 +8,7 @@ import Pagination from '../components/Pagination';
 import LoadingSpinner from '../components/LoadingSpinner';
 import expenseService from '../services/expenseService';
 import categoryService from '../services/categoryService';
+import { getCategoryColor, getCategoryBadgeStyle } from '../utils/categoryColors';
 
 const formatCurrency = (amount) => {
   const num = Number(amount) || 0;
@@ -23,6 +25,7 @@ const PAYMENT_METHODS = ['UPI', 'Cash', 'Card', 'NetBanking', 'Other'];
 
 export default function Expenses() {
   const { addToast } = useToast();
+  const navigate = useNavigate();
   const [expenses, setExpenses] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +33,7 @@ export default function Expenses() {
   const [totalPages, setTotalPages] = useState(0);
   const [filterCategory, setFilterCategory] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [noCategoryModalOpen, setNoCategoryModalOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState(null);
   const [saving, setSaving] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -79,13 +83,17 @@ export default function Expenses() {
   };
 
   const openAddModal = () => {
+    if (categories.length === 0) {
+      setNoCategoryModalOpen(true);
+      return;
+    }
     setEditingExpense(null);
     setForm({
       amount: '',
       description: '',
       paymentMethod: 'UPI',
       expenseDate: new Date().toISOString().split('T')[0],
-      categoryId: categories.length > 0 ? String(categories[0].id) : '',
+      categoryId: '',
     });
     setModalOpen(true);
   };
@@ -210,7 +218,15 @@ export default function Expenses() {
                   <tr key={exp.id}>
                     <td>{exp.description || '—'}</td>
                     <td>
-                      <span className="badge badge-expense">{exp.categoryName}</span>
+                      {(() => {
+                        const color = getCategoryColor(exp.categoryId, exp.categoryName, categories);
+                        return (
+                          <span className="badge" style={getCategoryBadgeStyle(color)}>
+                            <span className="badge-dot" style={{ backgroundColor: color }} />
+                            {exp.categoryName || 'Uncategorized'}
+                          </span>
+                        );
+                      })()}
                     </td>
                     <td>{formatDate(exp.expenseDate)}</td>
                     <td>{exp.paymentMethod}</td>
@@ -242,20 +258,32 @@ export default function Expenses() {
           </div>
           <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
         </>
+      ) : categories.length === 0 ? (
+        <div className="empty-state">
+          <div className="empty-icon">
+            <Tags size={24} strokeWidth={2} />
+          </div>
+          <h3>No categories yet</h3>
+          <p>Create a category before recording your first expense.</p>
+          <Link to="/categories" className="btn btn-primary" style={{ marginTop: '1.25rem' }}>
+            <Plus size={16} strokeWidth={2.5} />
+            <span>Create Category</span>
+          </Link>
+        </div>
       ) : (
         <div className="empty-state">
           <div className="empty-icon">
             <Receipt size={24} strokeWidth={2} />
           </div>
-          <h3>No expenses found</h3>
+          <h3>No expenses yet</h3>
           <p>
             {filterCategory
               ? 'Try selecting a different category filter'
-              : 'Start logging your expenses to track your spending'}
+              : 'Create a category and record your first expense.'}
           </p>
           <button className="btn btn-primary" style={{ marginTop: '1.25rem' }} onClick={openAddModal}>
             <Plus size={16} strokeWidth={2.5} />
-            <span>Add Your First Expense</span>
+            <span>Add Expense</span>
           </button>
         </div>
       )}
@@ -308,7 +336,7 @@ export default function Expenses() {
             value={form.categoryId}
             onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
           >
-            <option value="">Select a category</option>
+            <option value="" disabled>Select a category</option>
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
@@ -340,6 +368,55 @@ export default function Expenses() {
             value={form.expenseDate}
             onChange={(e) => setForm({ ...form, expenseDate: e.target.value })}
           />
+        </div>
+      </Modal>
+
+      {/* Category Prerequisite Modal */}
+      <Modal
+        isOpen={noCategoryModalOpen}
+        onClose={() => setNoCategoryModalOpen(false)}
+        title="Category Required First"
+        footer={
+          <>
+            <button className="btn btn-secondary" onClick={() => setNoCategoryModalOpen(false)}>
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                setNoCategoryModalOpen(false);
+                navigate('/categories');
+              }}
+            >
+              Go to Categories
+            </button>
+          </>
+        }
+      >
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+          <div
+            style={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              background: 'rgba(99, 102, 241, 0.15)',
+              color: 'var(--primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <Tags size={24} />
+          </div>
+          <div>
+            <h4 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+              No Categories Created Yet
+            </h4>
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+              In ExpenseFlow, every expense must be assigned to a category (e.g., Food, Travel, Rent, Bills). Please create at least one category before logging your expenses.
+            </p>
+          </div>
         </div>
       </Modal>
 
