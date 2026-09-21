@@ -487,12 +487,12 @@ export default function Landing() {
               <ul>
                 <li>
                   <a
-                    href="https://github.com"
+                    href="https://github.com/akkiiop/expenseflow"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
                   >
-                    <span>GitHub</span>
+                    <span>GitHub Repository</span>
                     <ExternalLink size={12} />
                   </a>
                 </li>
