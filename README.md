@@ -1,60 +1,57 @@
-# 💸 ExpenseFlow — Smart Personal Finance Management Platform
+# 💸 ExpenseFlow — Personal Finance Management Platform
 
 <div align="center">
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-expenseflow.dev-6366F1?style=for-the-badge&logo=googlechrome&logoColor=white)](https://www.expenseflow.dev/)
 [![React](https://img.shields.io/badge/React%2019-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
-[![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
-[![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot_3.x-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![MySQL](https://img.shields.io/badge/MySQL_8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
 [![AWS](https://img.shields.io/badge/AWS_EC2-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
+[![Gemini](https://img.shields.io/badge/Google_Gemini-2.5_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
 
-**A modern, full-stack personal finance platform designed to track expenses, manage income, enforce monthly budgets, visualize financial trends, and provide AI-driven financial insights.**
+**A full-stack personal finance platform built with React and Spring Boot to track expenses, manage income, enforce category budgets, and generate AI-driven spending insights.**
 
-[Explore Live Application](https://www.expenseflow.dev/) • [Report Bug](https://github.com/akkiiop/expenseflow/issues) • [Request Feature](https://github.com/akkiiop/expenseflow/issues)
+> 🚀 **Live Production Deployment:** [https://www.expenseflow.dev/](https://www.expenseflow.dev/)
+
+[Explore Live App](https://www.expenseflow.dev/) • [View Backend](backend/) • [View Frontend](frontend/)
 
 </div>
 
 ---
 
-## 📖 Table of Contents
-
-- [Overview](#-overview)
-- [Key Features](#-key-features)
-- [System Architecture](#-system-architecture)
-- [Tech Stack](#-tech-stack)
-- [Database Schema](#-database-schema)
-- [REST API Endpoints](#-rest-api-endpoints)
-- [Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Backend Setup (Spring Boot)](#backend-setup-spring-boot)
-  - [Frontend Setup (React + Vite)](#frontend-setup-react--vite)
-- [Environment Configuration](#-environment-configuration)
-- [Production Deployment (AWS EC2 + Nginx)](#-production-deployment-aws-ec2--nginx)
-- [Contributing](#-contributing)
-- [License](#-license)
-
----
-
 ## 🌟 Overview
 
-**ExpenseFlow** solves the chaos of personal money management. Built with a high-performance **React 19** frontend and a robust **Spring Boot** backend, it gives users complete control and visibility over their personal finances.
+ExpenseFlow is a full-stack personal finance management web application. The platform combines transaction tracking, budgeting, financial reporting, and Gemini-powered spending analysis in a single, responsive application.
 
-With seamless JWT authentication, dynamic category color systems, interactive budgeting thresholds, detailed analytics reports, and automated **Google Gemini AI insights**, ExpenseFlow transforms raw numbers into actionable financial intelligence.
+Built with a **React 19** frontend and a **Spring Boot** REST backend backed by **MySQL**, ExpenseFlow implements stateless JWT authentication, user-isolated data storage, and direct cloud integration with Google Gemini.
 
 ---
 
-## ✨ Key Features
+## 🧩 What I Built
 
-- 🔐 **Stateless JWT Authentication**: Secure user registration, login, password hashing, and user-isolated data storage.
-- 📊 **Real-time Financial Dashboard**: Instant metrics on total balance, monthly income, monthly expenses, spending breakdown, and quick transaction logs.
-- 💳 **Expense Tracking**: Full CRUD management with category assignment, payment method tags (UPI, Cash, Card, Net Banking), dates, and notes.
-- 💰 **Income Management**: Track income across multiple streams (Salary, Freelance, Investments) with date logging.
-- 🎯 **Smart Budgeting & Alerts**: Set category-specific monthly budget caps with dynamic percentage progress bars and over-budget warnings.
-- 🏷️ **Dynamic Categories**: Create personalized categories with automatic color-coding and icon badges.
-- 📈 **Visual Reports & Analytics**: Interactive spending distributions, category percentages, and period summaries.
-- 🤖 **AI Financial Insights**: Powered by **Spring AI & Google Gemini 1.5 Flash** to analyze spending patterns and provide personalized recommendations.
-- 📱 **100% Responsive Design**: Clean dark fintech UI with glassmorphism, responsive navigation drawer, and mobile optimization.
+ExpenseFlow demonstrates end-to-end full-stack engineering competencies:
+
+- **REST API Architecture**: Layered Spring Boot backend (Controllers, Services, Repositories, DTOs).
+- **Authentication & Security**: Stateless JWT-based authentication with Spring Security and BCrypt password encryption.
+- **User Data Isolation**: Strict user-scoped database operations preventing cross-account access.
+- **Relational Data Modeling**: MySQL schema design with foreign-key referential integrity and JPA/Hibernate mapping.
+- **Modern React Frontend**: React 19 SPA built with Vite, React Router v7, and custom responsive CSS.
+- **AI Integration**: Native Java `HttpClient` integration calling Google's Gemini 2.5 Flash API directly.
+- **Production Cloud Deployment**: Hosted on AWS EC2 (Ubuntu) with Nginx reverse proxy, custom domain, and SSL.
+
+---
+
+## ✨ Features
+
+- 🔐 **JWT Authentication**: Secure user registration, login, password hashing, and token-based route guards.
+- 📊 **Financial Dashboard**: Overview of monthly income, monthly expenses, net balance, and spending breakdown.
+- 💳 **Expense Tracking**: Log, edit, and delete expenses with categories, payment methods (UPI, Cash, Card), and notes.
+- 💰 **Income Management**: Record earnings across multiple income streams with transaction dates.
+- 🎯 **Budget Management**: Set monthly spending limits per category and monitor consumption progress.
+- 🏷️ **Custom Categories**: Create user-defined spending categories with automated color-coded badges.
+- 📈 **Financial Reports**: Visual summaries of spending patterns and category distributions.
+- 🤖 **AI Spending Insights**: Actionable spending observations generated via Google Gemini 2.5 Flash.
+- 📱 **Responsive UI**: Dark fintech theme with mobile navigation drawer and tablet-friendly layouts.
 
 ---
 
@@ -63,51 +60,36 @@ With seamless JWT authentication, dynamic category color systems, interactive bu
 ```mermaid
 graph TD
     Client["Client Browser (Desktop / Mobile)"]
-    Nginx["Nginx Reverse Proxy (AWS EC2 :80 / :443)"]
-    Static["Vite React Production Assets (/var/www/html)"]
-    Spring["Spring Boot Application (:8080)"]
+    Nginx["Nginx Reverse Proxy (AWS EC2 :443)"]
+    Static["Vite React Build (/var/www/html)"]
+    Spring["Spring Boot REST API (:8080)"]
     MySQL[("MySQL 8.0 Database")]
-    Gemini["Google Gemini API (Spring AI)"]
+    Gemini["Google Gemini 2.5 Flash API"]
 
     Client -->|HTTPS :443| Nginx
-    Nginx -->|Serve Static HTML/JS/CSS| Static
+    Nginx -->|Static Assets| Static
     Nginx -->|Proxy /api/*| Spring
     Spring -->|Spring Security & JWT| Spring
-    Spring -->|Spring Data JPA / Hibernate| MySQL
-    Spring -->|Financial Prompt Analysis| Gemini
+    Spring -->|Spring Data JPA| MySQL
+    Spring -->|Java HttpClient| Gemini
 ```
 
 ---
 
 ## 🛠 Tech Stack
 
-### **Frontend**
-| Technology | Description |
-|:---|:---|
-| **React 19** | Modern reactive component architecture |
-| **Vite 8** | Ultra-fast development server and optimized production bundler |
-| **React Router v7** | Client-side routing with protected route guards |
-| **Axios** | HTTP client with automatic JWT bearer token interceptors |
-| **Lucide React** | Clean, modern featherweight vector iconography |
-| **Vanilla CSS3** | Custom design system, CSS variables, glassmorphism, responsive tokens |
-
-### **Backend**
-| Technology | Description |
-|:---|:---|
-| **Java 21 (LTS)** | Modern Java features, records, and virtual thread readiness |
-| **Spring Boot** | Enterprise backend application framework |
-| **Spring Security** | Stateless JWT authentication and role/user isolation |
-| **Spring Data JPA & Hibernate** | Object-relational database mapping and repository queries |
-| **Spring AI** | Integration with LLMs via OpenAI-compatible endpoints |
-| **Google Gemini 1.5 Flash** | Intelligent spending analysis and actionable financial advice |
-
-### **Database & Infrastructure**
-| Technology | Description |
-|:---|:---|
-| **MySQL 8.0** | Relational data persistence with foreign-key referential integrity |
-| **AWS EC2 (Ubuntu 24.04)** | Cloud compute hosting the application server |
-| **Nginx 1.24** | High-performance reverse proxy and static asset web server |
-| **SSL / TLS** | Encrypted HTTPS communication |
+| Layer | Technology | Description |
+|:---|:---|:---|
+| **Frontend** | React 19, Vite 8 | Single Page Application with fast bundling |
+| **Routing & Icons** | React Router v7, Lucide React | Client-side routing & clean vector iconography |
+| **Styling** | Modern CSS3 | Custom fintech dark theme, CSS tokens, responsive layouts |
+| **Backend** | Java 21 (LTS), Spring Boot | Enterprise RESTful API services |
+| **Security** | Spring Security 6, JJWT | Stateless JWT token issuance and validation |
+| **ORM / Persistence** | Spring Data JPA, Hibernate | Data access layer and entity relationships |
+| **AI Integration** | Google Gemini 2.5 Flash | Spending analysis via native Java `HttpClient` |
+| **Database** | MySQL 8.0 | Relational storage with foreign-key constraints |
+| **Infrastructure** | AWS EC2 (Ubuntu 24.04) | Cloud compute instance |
+| **Web Server** | Nginx 1.24 | Reverse proxy, static file server, and SSL termination |
 
 ---
 
@@ -170,43 +152,52 @@ erDiagram
 
 ---
 
-## 🔌 REST API Endpoints
+## 🔌 REST API Reference
 
-All protected endpoints require the header: `Authorization: Bearer <JWT_TOKEN>`.
+All protected endpoints require the HTTP header: `Authorization: Bearer <JWT_TOKEN>`.
 
-### 🔐 Authentication
-- `POST /api/auth/register` — Register a new account
-- `POST /api/auth/login` — Authenticate and receive a JWT token
+### 🔐 User & Authentication (`/api/users`)
+- `POST /api/users` — Register a new account
+- `POST /api/users/login` — Authenticate and receive JWT token
+- `GET /api/users/me` — Retrieve current authenticated user profile
+- `GET /api/users/{id}` — Retrieve user by ID
+- `PUT /api/users/{id}` — Update user profile
+- `DELETE /api/users/{id}` — Delete user account
 
-### 💳 Expenses
-- `GET /api/expenses` — List user's expenses (supports pagination, date range, search)
-- `POST /api/expenses` — Create a new expense entry
+### 💳 Expenses (`/api/expenses`)
+- `POST /api/expenses` — Create a new expense
+- `GET /api/expenses/my-expenses?page=0&size=10&categoryId=` — List paginated expenses with optional category filter
 - `GET /api/expenses/{id}` — Retrieve expense details
 - `PUT /api/expenses/{id}` — Update an expense
 - `DELETE /api/expenses/{id}` — Delete an expense
 
-### 💰 Income
-- `GET /api/incomes` — List user's income records
-- `POST /api/incomes` — Add new income record
-- `PUT /api/incomes/{id}` — Update income record
-- `DELETE /api/incomes/{id}` — Delete income record
+### 💰 Incomes (`/api/incomes`)
+- `POST /api/incomes` — Create a new income record
+- `GET /api/incomes/my-incomes?page=0&size=10` — List paginated income records
+- `GET /api/incomes/{id}` — Retrieve income details
+- `PUT /api/incomes/{id}` — Update an income record
+- `DELETE /api/incomes/{id}` — Delete an income record
 
-### 🎯 Budgets
-- `GET /api/budgets` — List monthly category budgets with spending progress
-- `POST /api/budgets` — Set or update category budget limit
-- `DELETE /api/budgets/{id}` — Remove a budget
+### 🎯 Budgets (`/api/budgets`)
+- `POST /api/budgets` — Create/set a category budget limit
+- `GET /api/budgets/my-budgets` — List all budgets for authenticated user
+- `GET /api/budgets/{id}` — Retrieve budget details
+- `PUT /api/budgets/{id}` — Update budget limit
+- `DELETE /api/budgets/{id}` — Delete a budget
 
-### 🏷️ Categories
-- `GET /api/categories` — Get list of user's custom categories
-- `POST /api/categories` — Add a new custom category
+### 🏷️ Categories (`/api/categories`)
+- `POST /api/categories` — Create custom category
+- `GET /api/categories/my-categories` — List user's custom categories
+- `GET /api/categories/{id}` — Retrieve category details
+- `PUT /api/categories/{id}` — Update category name
 - `DELETE /api/categories/{id}` — Delete a category
 
 ### 📊 Dashboard & Reports
-- `GET /api/dashboard/summary` — Key KPIs (Total balance, monthly income, monthly expenses)
-- `GET /api/reports/summary` — Aggregate reporting data across date periods and categories
+- `GET /api/dashboard/summary?month={m}&year={y}` — Get monthly KPI summary (income, expenses, balance, category breakdown)
+- `GET /api/reports/summary` — Get aggregated financial report data
 
-### 🤖 AI Financial Insights
-- `GET /api/ai/insights` — Generate personalized financial recommendations from user spending data
+### 🤖 AI Insights (`/api/ai`)
+- `GET /api/ai/insights` — Generate personalized spending recommendations using Google Gemini 2.5 Flash
 
 ---
 
@@ -218,7 +209,7 @@ expenseflow/
 ├── backend/                  # Spring Boot Java 21 REST API
 │   ├── src/
 │   │   ├── main/java/com/expenseflow/
-│   │   │   ├── ai/           # Google Gemini AI Integration
+│   │   │   ├── ai/           # Gemini API integration via Java HttpClient
 │   │   │   ├── budget/       # Budget management service & controller
 │   │   │   ├── category/     # Custom category management
 │   │   │   ├── common/       # Security (JWT), exceptions, configs
@@ -228,22 +219,23 @@ expenseflow/
 │   │   │   ├── report/       # Financial reporting & analytics
 │   │   │   └── user/         # Auth & User management
 │   │   └── resources/        # application.properties
-│   ├── pom.xml               # Maven dependencies & build configuration
+│   ├── pom.xml               # Maven configuration
 │   └── mvnw                  # Maven wrapper
 │
 ├── frontend/                 # React 19 + Vite 8 SPA
-│   ├── public/               # Favicon and vector assets
+│   ├── public/               # Favicon & vector icons
 │   ├── src/
-│   │   ├── components/       # Reusable UI components (Navbar, Sidebar, Modal, Toast)
+│   │   ├── components/       # Reusable components (Navbar, Sidebar, Modal, Toast)
 │   │   ├── pages/            # Landing, Dashboard, Expenses, Income, Budgets, Reports
-│   │   ├── utils/            # Axios API client & dynamic category color system
-│   │   ├── App.jsx           # App routing & protected route logic
-│   │   └── index.css         # Fintech design system & tokens
+│   │   ├── services/         # Axios API service modules
+│   │   ├── utils/            # Category color mapping & helpers
+│   │   ├── App.jsx           # Routing & route guards
+│   │   └── index.css         # Design system & tokens
 │   ├── index.html            # Entry HTML
 │   ├── package.json          # Node dependencies
-│   └── vite.config.js        # Vite configuration & proxy settings
+│   └── vite.config.js        # Vite configuration
 │
-├── .gitignore                # Root git ignore rules
+├── .gitignore                # Unified root git ignore rules
 └── README.md                 # Project documentation
 ```
 
@@ -261,10 +253,9 @@ expenseflow/
 
 ### Backend Setup (Spring Boot)
 
-1. **Clone the repository**:
+1. **Navigate to backend directory**:
    ```bash
-   git clone https://github.com/akkiiop/expenseflow.git
-   cd expenseflow/backend
+   cd backend
    ```
 
 2. **Configure Database**:
@@ -273,8 +264,8 @@ expenseflow/
    CREATE DATABASE expenseflow CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
    ```
 
-3. **Set Environment Variables / Properties**:
-   Configure your `src/main/resources/application.properties` or environment variables:
+3. **Configure Properties / Environment**:
+   Update `src/main/resources/application.properties` or set environment variables:
    ```properties
    DB_URL=jdbc:mysql://localhost:3306/expenseflow
    DB_USERNAME=root
@@ -292,7 +283,7 @@ expenseflow/
 
 ### Frontend Setup (React + Vite)
 
-1. **Navigate to the frontend directory**:
+1. **Navigate to frontend directory**:
    ```bash
    cd ../frontend
    ```
@@ -310,15 +301,14 @@ expenseflow/
 
 ---
 
-## ⚙️ Environment Configuration
+## ⚙️ Environment Variables
 
 | Variable | Description | Default |
 |:---|:---|:---|
-| `DB_URL` | MySQL JDBC URL | `jdbc:mysql://localhost:3306/expenseflow` |
-| `DB_USERNAME` | MySQL user | `root` |
-| `DB_PASSWORD` | MySQL password | *empty* |
+| `DB_URL` | MySQL JDBC Connection URL | `jdbc:mysql://localhost:3306/expenseflow` |
+| `DB_USERNAME` | MySQL database username | `root` |
+| `DB_PASSWORD` | MySQL database password | *empty* |
 | `GEMINI_API_KEY` | Google Gemini API Key for AI Insights | *optional* |
-| `VITE_API_URL` | Frontend API backend proxy target | `/api` (proxied by Vite/Nginx) |
 
 ---
 
@@ -327,32 +317,30 @@ expenseflow/
 ExpenseFlow is deployed to an **AWS EC2 Ubuntu 24.04** instance with **Nginx** acting as the reverse proxy and SSL terminator.
 
 ```
-                    Internet (HTTPS)
-                           │
-                           ▼
-                  AWS EC2: Nginx (443)
-                  ┌────────┴────────┐
-                  ▼                 ▼
-             /var/www/html        /api/*
-          (Static React Build)  (Spring Boot :8080)
+                   Internet (HTTPS)
+                          │
+                          ▼
+                 AWS EC2: Nginx (443)
+                 ┌────────┴────────┐
+                 ▼                 ▼
+            /var/www/html        /api/*
+         (Static React Build)  (Spring Boot :8080)
 ```
 
-### Build & Deploy Commands
+### Build & Deploy Steps
 
-1. **Build Frontend**:
+1. **Compile Frontend**:
    ```bash
    cd frontend
    npm run build
    ```
 
-2. **Deploy to EC2**:
+2. **Deploy to AWS EC2**:
    ```bash
-   # SSH into AWS EC2
+   # Connect to EC2 instance
    ssh -i "expenseflow-key.pem" ubuntu@<EC2_PUBLIC_IP>
 
-   # Pull latest code and copy static files to Nginx web root
-   cd ~/frontend
-   git pull origin frontend
+   # Deploy latest build files to Nginx web root
    sudo rm -rf /var/www/html/*
    sudo cp -r ~/frontend/dist/* /var/www/html/
    sudo systemctl restart nginx
@@ -360,24 +348,12 @@ ExpenseFlow is deployed to an **AWS EC2 Ubuntu 24.04** instance with **Nginx** a
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome! If you'd like to improve ExpenseFlow:
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'feat: add some amazing feature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
 ## 📄 License
 
-Distributed under the **MIT License**. See `LICENSE` for more information.
+Distributed under the **MIT License**.
 
 ---
 
 <div align="center">
-  <sub>Built with ❤️ by <a href="https://github.com/akkiiop">Akshay Kawade</a></sub>
+  <sub>Built by <a href="https://github.com/akkiiop">Akshay Kawade</a> • <a href="https://www.expenseflow.dev/">expenseflow.dev</a></sub>
 </div>
