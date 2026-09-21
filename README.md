@@ -210,6 +210,45 @@ All protected endpoints require the header: `Authorization: Bearer <JWT_TOKEN>`.
 
 ---
 
+## 📁 Repository Structure
+
+```
+expenseflow/
+│
+├── backend/                  # Spring Boot Java 21 REST API
+│   ├── src/
+│   │   ├── main/java/com/expenseflow/
+│   │   │   ├── ai/           # Google Gemini AI Integration
+│   │   │   ├── budget/       # Budget management service & controller
+│   │   │   ├── category/     # Custom category management
+│   │   │   ├── common/       # Security (JWT), exceptions, configs
+│   │   │   ├── dashboard/    # KPI metrics & aggregates
+│   │   │   ├── expense/      # Expense CRUD & pagination
+│   │   │   ├── income/       # Income streams tracker
+│   │   │   ├── report/       # Financial reporting & analytics
+│   │   │   └── user/         # Auth & User management
+│   │   └── resources/        # application.properties
+│   ├── pom.xml               # Maven dependencies & build configuration
+│   └── mvnw                  # Maven wrapper
+│
+├── frontend/                 # React 19 + Vite 8 SPA
+│   ├── public/               # Favicon and vector assets
+│   ├── src/
+│   │   ├── components/       # Reusable UI components (Navbar, Sidebar, Modal, Toast)
+│   │   ├── pages/            # Landing, Dashboard, Expenses, Income, Budgets, Reports
+│   │   ├── utils/            # Axios API client & dynamic category color system
+│   │   ├── App.jsx           # App routing & protected route logic
+│   │   └── index.css         # Fintech design system & tokens
+│   ├── index.html            # Entry HTML
+│   ├── package.json          # Node dependencies
+│   └── vite.config.js        # Vite configuration & proxy settings
+│
+├── .gitignore                # Root git ignore rules
+└── README.md                 # Project documentation
+```
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -225,7 +264,7 @@ All protected endpoints require the header: `Authorization: Bearer <JWT_TOKEN>`.
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/akkiiop/expenseflow.git
-   cd expenseflow/expenseflow
+   cd expenseflow/backend
    ```
 
 2. **Configure Database**:

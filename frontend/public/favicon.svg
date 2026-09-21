@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="efGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="7.5" fill="url(#efGrad)"/>
+  <!-- Polished ExpenseFlow Wallet & Balance Flow Emblem -->
+  <path d="M7 11C7 9.895 7.895 9 9 9h14a1 1 0 0 1 1 1v3.5H10.5A2.5 2.5 0 0 0 8 16v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5a1.5 1.5 0 0 0-1.5-1.5H19a1.5 1.5 0 0 0 0 3h3.5" 
+        fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="19" cy="15" r="1" fill="#FFFFFF"/>
+</svg>
