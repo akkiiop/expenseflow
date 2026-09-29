@@ -331,19 +331,19 @@ function Hero3D() {
         </div>
 
         {/* Floating 3D Rotating ₹ Coins (retained decorative effect, positioned clear of text) */}
-        <div className="ef-coin" style={{ '--x': '-110px', '--y': '35px', '--z': 220, '--dl': '0s' }}>
+        <div className="ef-coin ef-coin-1" style={{ '--x': '-110px', '--y': '35px', '--z': 220, '--dl': '0s' }}>
           <div className="ef-coin-spin">
             <div className="ef-coin-face">₹</div>
             <div className="ef-coin-face ef-back">₹</div>
           </div>
         </div>
-        <div className="ef-coin" style={{ '--x': '340px', '--y': '230px', '--z': 190, '--dl': '-2.5s' }}>
+        <div className="ef-coin ef-coin-2" style={{ '--x': '340px', '--y': '230px', '--z': 190, '--dl': '-2.5s' }}>
           <div className="ef-coin-spin">
             <div className="ef-coin-face">₹</div>
             <div className="ef-coin-face ef-back">₹</div>
           </div>
         </div>
-        <div className="ef-coin" style={{ '--x': '330px', '--y': '-45px', '--z': 140, '--dl': '-4.5s' }}>
+        <div className="ef-coin ef-coin-3" style={{ '--x': '330px', '--y': '-45px', '--z': 140, '--dl': '-4.5s' }}>
           <div className="ef-coin-spin">
             <div className="ef-coin-face">₹</div>
             <div className="ef-coin-face ef-back">₹</div>
