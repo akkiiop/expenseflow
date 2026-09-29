@@ -62,6 +62,7 @@ export default function Dashboard() {
   const currentYear = now.getFullYear();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     loadDashboard();
   }, []);
 
