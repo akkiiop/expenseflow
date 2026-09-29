@@ -30,13 +30,15 @@ export default function ConfirmModal({
         className="modal-content"
         style={{
           maxWidth: '440px',
-          padding: '1.75rem',
-          borderRadius: '16px',
-          boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08)',
+          padding: '2rem 1.75rem',
+          borderRadius: '20px',
+          background: 'var(--sheet, #F8F9F4)',
+          border: '1px solid rgba(15, 42, 41, 0.1)',
+          boxShadow: '0 24px 48px -12px rgba(15, 42, 41, 0.22), 0 0 0 1px rgba(15, 42, 41, 0.05)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '-0.25rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '-0.5rem', marginRight: '-0.25rem', marginBottom: '0.25rem' }}>
           <button
             className="modal-close"
             onClick={onClose}
@@ -49,7 +51,7 @@ export default function ConfirmModal({
           </button>
         </div>
 
-        <div style={{ textAlign: 'center', marginBottom: '1.5rem', padding: '0 0.5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.75rem', padding: '0 0.5rem' }}>
           <div
             style={{
               display: 'inline-flex',
@@ -58,30 +60,31 @@ export default function ConfirmModal({
               width: '56px',
               height: '56px',
               borderRadius: '50%',
-              background: danger ? 'rgba(244, 63, 94, 0.12)' : 'rgba(245, 158, 11, 0.12)',
-              color: danger ? 'var(--expense)' : 'var(--warning)',
+              background: danger ? 'rgba(201, 58, 99, 0.1)' : 'rgba(185, 138, 46, 0.12)',
+              color: danger ? 'var(--rose)' : 'var(--brass)',
               border: danger
-                ? '1px solid rgba(244, 63, 94, 0.28)'
-                : '1px solid rgba(245, 158, 11, 0.28)',
+                ? '1px solid rgba(201, 58, 99, 0.25)'
+                : '1px solid rgba(185, 138, 46, 0.28)',
               boxShadow: danger
-                ? '0 0 20px rgba(244, 63, 94, 0.15)'
-                : '0 0 20px rgba(245, 158, 11, 0.15)',
+                ? '0 0 20px rgba(201, 58, 99, 0.12)'
+                : '0 0 20px rgba(185, 138, 46, 0.12)',
               marginBottom: '1rem',
             }}
           >
             {danger ? (
-              <Trash2 size={26} strokeWidth={2} />
+              <Trash2 size={24} strokeWidth={2.25} />
             ) : (
-              <AlertTriangle size={26} strokeWidth={2} />
+              <AlertTriangle size={24} strokeWidth={2.25} />
             )}
           </div>
           <h3
             style={{
+              fontFamily: 'var(--display)',
               fontSize: '1.25rem',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              marginBottom: '0.625rem',
-              letterSpacing: '-0.01em',
+              fontWeight: 700,
+              color: 'var(--ink)',
+              marginBottom: '0.5rem',
+              letterSpacing: '-0.02em',
             }}
           >
             {title}
@@ -89,7 +92,7 @@ export default function ConfirmModal({
           <p
             style={{
               fontSize: '0.9rem',
-              color: 'var(--text-muted)',
+              color: 'var(--muted)',
               lineHeight: 1.55,
               wordBreak: 'break-word',
             }}
@@ -104,7 +107,7 @@ export default function ConfirmModal({
             className="btn btn-secondary"
             onClick={onClose}
             disabled={loading}
-            style={{ height: '42px', justifyContent: 'center', fontWeight: 500 }}
+            style={{ height: '42px', justifyContent: 'center', fontWeight: 600, borderRadius: '9999px' }}
           >
             Cancel
           </button>
@@ -116,13 +119,14 @@ export default function ConfirmModal({
             style={{
               height: '42px',
               justifyContent: 'center',
-              background: danger ? 'var(--expense)' : 'var(--warning)',
+              background: danger ? 'var(--rose)' : 'var(--brass)',
               color: '#ffffff',
               border: 'none',
               fontWeight: 600,
+              borderRadius: '9999px',
               boxShadow: danger
-                ? '0 4px 14px rgba(244, 63, 94, 0.35)'
-                : '0 4px 14px rgba(245, 158, 11, 0.35)',
+                ? '0 4px 14px rgba(201, 58, 99, 0.3)'
+                : '0 4px 14px rgba(185, 138, 46, 0.3)',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.5rem',

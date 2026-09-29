@@ -5,6 +5,7 @@ import { useToast } from '../components/Toast';
 import Modal from '../components/Modal';
 import ConfirmModal from '../components/ConfirmModal';
 import BudgetProgress from '../components/BudgetProgress';
+import CustomSelect from '../components/CustomSelect';
 import LoadingSpinner from '../components/LoadingSpinner';
 import budgetService from '../services/budgetService';
 import categoryService from '../services/categoryService';
@@ -253,18 +254,12 @@ export default function Budgets() {
       >
         <div className="form-group">
           <label className="form-label">Category *</label>
-          <select
-            className="form-select"
+          <CustomSelect
             value={form.categoryId}
-            onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
-          >
-            <option value="">Select a category</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
+            onChange={(val) => setForm({ ...form, categoryId: val })}
+            options={categories.map((cat) => ({ value: cat.id, label: cat.name }))}
+            placeholder="Select a category"
+          />
         </div>
 
         <div className="form-group">
@@ -280,20 +275,15 @@ export default function Budgets() {
           />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+        <div className="form-row">
           <div className="form-group">
             <label className="form-label">Month *</label>
-            <select
-              className="form-select"
+            <CustomSelect
               value={form.month}
-              onChange={(e) => setForm({ ...form, month: e.target.value })}
-            >
-              {Array.from({ length: 12 }, (_, i) => (
-                <option key={i + 1} value={i + 1}>
-                  {getMonthName(i + 1)}
-                </option>
-              ))}
-            </select>
+              onChange={(val) => setForm({ ...form, month: Number(val) })}
+              options={Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: getMonthName(i + 1) }))}
+              placeholder="Select month"
+            />
           </div>
 
           <div className="form-group">

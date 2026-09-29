@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { TrendingUp, Receipt, Wallet, BarChart3, PieChart, TrendingDown } from 'lucide-react';
 import { useToast } from '../components/Toast';
 import SummaryCard from '../components/SummaryCard';
+import CustomSelect from '../components/CustomSelect';
 import LoadingSpinner from '../components/LoadingSpinner';
 import reportService from '../services/reportService';
 import dashboardService from '../services/dashboardService';
@@ -136,12 +137,12 @@ function LineChart({ incomeData, expenseData, labels, height = 220 }) {
       <svg viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} preserveAspectRatio="xMidYMid meet" className="line-chart-svg">
         <defs>
           <linearGradient id="incomeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#10b981" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+            <stop offset="0%" stopColor="#17806A" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#17806A" stopOpacity="0" />
           </linearGradient>
           <linearGradient id="expenseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#f43f5e" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#f43f5e" stopOpacity="0" />
+            <stop offset="0%" stopColor="#C93A63" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#C93A63" stopOpacity="0" />
           </linearGradient>
         </defs>
 
@@ -153,8 +154,9 @@ function LineChart({ incomeData, expenseData, labels, height = 220 }) {
               y1={getY(val)}
               x2={viewBoxWidth - paddingX}
               y2={getY(val)}
-              stroke="rgba(255,255,255,0.06)"
+              stroke="rgba(15, 42, 41, 0.08)"
               strokeWidth="1"
+              strokeDasharray="4 4"
             />
             <text
               x={paddingX - 6}
@@ -185,15 +187,15 @@ function LineChart({ incomeData, expenseData, labels, height = 220 }) {
         <path d={buildAreaPath(expenseData)} fill="url(#expenseGrad)" className="line-chart-area" />
 
         {/* Lines */}
-        <path d={buildPath(incomeData)} fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="line-chart-line" />
-        <path d={buildPath(expenseData)} fill="none" stroke="#f43f5e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="line-chart-line" />
+        <path d={buildPath(incomeData)} fill="none" stroke="#17806A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="line-chart-line" />
+        <path d={buildPath(expenseData)} fill="none" stroke="#C93A63" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="line-chart-line" />
 
         {/* Data points */}
         {incomeData.map((val, i) => (
-          <circle key={`i-${i}`} cx={getX(i)} cy={getY(val)} r="4" fill="#10b981" stroke="#0a0e1a" strokeWidth="2" className="line-chart-dot" />
+          <circle key={`i-${i}`} cx={getX(i)} cy={getY(val)} r="4" fill="#17806A" stroke="#FFFFFF" strokeWidth="2" className="line-chart-dot" />
         ))}
         {expenseData.map((val, i) => (
-          <circle key={`e-${i}`} cx={getX(i)} cy={getY(val)} r="4" fill="#f43f5e" stroke="#0a0e1a" strokeWidth="2" className="line-chart-dot" />
+          <circle key={`e-${i}`} cx={getX(i)} cy={getY(val)} r="4" fill="#C93A63" stroke="#FFFFFF" strokeWidth="2" className="line-chart-dot" />
         ))}
       </svg>
 
@@ -366,18 +368,16 @@ export default function Reports() {
           <h2 className="section-title">Monthly Breakdown</h2>
         </div>
         <div className="filter-bar">
-          <select
-            className="form-select"
+          <CustomSelect
+            className="report-month-select"
             value={selectedMonth}
-            onChange={(e) => setSelectedMonth(Number(e.target.value))}
-            aria-label="Select report month"
-          >
-            {Array.from({ length: 12 }, (_, i) => (
-              <option key={i + 1} value={i + 1}>
-                {getMonthName(i + 1)}
-              </option>
-            ))}
-          </select>
+            onChange={(val) => setSelectedMonth(Number(val))}
+            options={Array.from({ length: 12 }, (_, i) => ({
+              value: i + 1,
+              label: getMonthName(i + 1)
+            }))}
+            placeholder="Select month"
+          />
           <input
             type="number"
             className="form-input report-year-input"

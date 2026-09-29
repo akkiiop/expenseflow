@@ -56,8 +56,28 @@ export default function Sidebar({ isOpen, onClose }) {
       <aside className={`app-sidebar ${isOpen ? 'open' : ''}`}>
         <div className="sidebar-brand">
           <div className="sidebar-brand-text">
-            <h1>ExpenseFlow</h1>
-            <span>Personal Finance Manager</span>
+            <div style={{
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              background: '#0F2A29',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              flexShrink: 0
+            }}>
+              <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
+                <rect width="40" height="40" rx="10" fill="#0F2A29" />
+                <path d="M10 26 C 16 26, 18 14, 26 14 C 30 14, 32 18, 34 20" stroke="#34C7A5" strokeWidth="3.5" strokeLinecap="round" fill="none" />
+                <circle cx="26" cy="14" r="3" fill="#ECEEE7" />
+              </svg>
+            </div>
+            <div>
+              <h1 style={{ fontSize: '1.15rem', lineHeight: 1.2 }}>ExpenseFlow</h1>
+              <span style={{ fontSize: '0.7rem', color: '#728D87', marginTop: '2px' }}>Smart Personal Finance</span>
+            </div>
           </div>
           <button
             className="sidebar-close-btn"

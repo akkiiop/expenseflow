@@ -7,17 +7,23 @@ export default function SummaryCard({ icon: Icon, label, value, subtitle, varian
       return Icon;
     }
     if (typeof Icon === 'function' || (typeof Icon === 'object' && Icon !== null)) {
-      return <Icon size={20} strokeWidth={2} />;
+      return <Icon size={20} strokeWidth={2.25} />;
     }
     return Icon;
   };
 
   return (
     <div className={`summary-card ${variant}`}>
-      <div className="card-icon">{renderIcon()}</div>
-      <div className="card-label">{label}</div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.875rem' }}>
+        <div className="card-label">{label}</div>
+        <div className="card-icon" style={{ margin: 0, width: 38, height: 38 }}>{renderIcon()}</div>
+      </div>
       <div className="card-value">{value}</div>
-      {subtitle && <div className="card-subtitle">{subtitle}</div>}
+      {subtitle && (
+        <div className="card-subtitle">
+          <span>{subtitle}</span>
+        </div>
+      )}
     </div>
   );
 }

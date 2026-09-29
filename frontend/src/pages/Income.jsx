@@ -154,7 +154,7 @@ export default function Income() {
               <tbody>
                 {incomes.map((inc) => (
                   <tr key={inc.id}>
-                    <td style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{inc.source}</td>
+                    <td style={{ fontWeight: 600, color: 'var(--ink)' }}>{inc.source}</td>
                     <td>{inc.description || '—'}</td>
                     <td>{formatDate(inc.incomeDate)}</td>
                     <td className="amount-positive">+{formatCurrency(inc.amount)}</td>

@@ -5,6 +5,7 @@ import { useToast } from '../components/Toast';
 import Modal from '../components/Modal';
 import ConfirmModal from '../components/ConfirmModal';
 import Pagination from '../components/Pagination';
+import CustomSelect from '../components/CustomSelect';
 import LoadingSpinner from '../components/LoadingSpinner';
 import expenseService from '../services/expenseService';
 import categoryService from '../services/categoryService';
@@ -178,22 +179,18 @@ export default function Expenses() {
 
       {/* Filters */}
       <div className="filter-bar">
-        <select
-          className="form-select"
+        <CustomSelect
           value={filterCategory}
-          onChange={(e) => {
-            setFilterCategory(e.target.value);
+          onChange={(val) => {
+            setFilterCategory(val);
             setPage(0);
           }}
-          aria-label="Filter expenses by category"
-        >
-          <option value="">All Categories</option>
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
+          options={[
+            { value: '', label: 'All Categories' },
+            ...categories.map((cat) => ({ value: cat.id, label: cat.name }))
+          ]}
+          placeholder="All Categories"
+        />
       </div>
 
       {/* Table */}
@@ -229,7 +226,7 @@ export default function Expenses() {
                       })()}
                     </td>
                     <td>{formatDate(exp.expenseDate)}</td>
-                    <td>{exp.paymentMethod}</td>
+                    <td><span className="method-pill">{exp.paymentMethod}</span></td>
                     <td className="amount-negative">-{formatCurrency(exp.amount)}</td>
                     <td>
                       <div className="category-actions" style={{ justifyContent: 'flex-end' }}>
@@ -331,33 +328,22 @@ export default function Expenses() {
 
         <div className="form-group">
           <label className="form-label">Category *</label>
-          <select
-            className="form-select"
+          <CustomSelect
             value={form.categoryId}
-            onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
-          >
-            <option value="" disabled>Select a category</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
+            onChange={(val) => setForm({ ...form, categoryId: val })}
+            options={categories.map((cat) => ({ value: cat.id, label: cat.name }))}
+            placeholder="Select a category"
+          />
         </div>
 
         <div className="form-group">
           <label className="form-label">Payment Method *</label>
-          <select
-            className="form-select"
+          <CustomSelect
             value={form.paymentMethod}
-            onChange={(e) => setForm({ ...form, paymentMethod: e.target.value })}
-          >
-            {PAYMENT_METHODS.map((pm) => (
-              <option key={pm} value={pm}>
-                {pm}
-              </option>
-            ))}
-          </select>
+            onChange={(val) => setForm({ ...form, paymentMethod: val })}
+            options={PAYMENT_METHODS.map((pm) => ({ value: pm, label: pm }))}
+            placeholder="Select payment method"
+          />
         </div>
 
         <div className="form-group">
