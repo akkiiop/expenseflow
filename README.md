@@ -26,15 +26,23 @@
 
 ## 📸 Application Showcase
 
-| 🌟 Public Landing Page | 📊 Authenticated Financial Dashboard |
-|:---:|:---:|
-| [![ExpenseFlow Landing Page](docs/images/landing-page.png)](https://www.expenseflow.dev/) | [![ExpenseFlow Dashboard](docs/images/dashboard.png)](https://www.expenseflow.dev/) |
-
 <div align="center">
 
-| 📈 Visual Reports & Analytics Trends |
-|:---:|
-| [![ExpenseFlow Reports](docs/images/reports.png)](https://www.expenseflow.dev/) |
+### 🌟 Public Landing Page
+<a href="https://www.expenseflow.dev/">
+  <img src="assets/Landing_Page.png" width="800" alt="Landing Page"/>
+</a>
+
+<br/>
+<br/>
+
+| 📊 Financial Dashboard | 📈 Reports & Analytics |
+|:---:|:---:|
+| <img src="assets/dashboardd.png" width="400" alt="Dashboard"/> | <img src="assets/Reports_Analysis.png" width="400" alt="Reports and Charts"/> |
+
+| 💸 Add Expense Form | 🔐 Secure Login |
+|:---:|:---:|
+| <img src="assets/Add_expense.png" width="400" alt="Add Expense Form"/> | <img src="assets/loginpage.png" width="400" alt="Login Page"/> |
 
 </div>
 
